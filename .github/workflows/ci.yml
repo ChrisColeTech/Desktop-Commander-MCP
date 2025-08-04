@@ -116,8 +116,14 @@ jobs:
       - name: Check package size
         shell: bash
         run: |
-          PACKAGE_SIZE=$(npm pack --dry-run --silent | grep "tarball size:" | awk '{print $3}')
-          echo "📦 Package size: $PACKAGE_SIZE"
+          # Get package size from npm pack output
+          PACK_OUTPUT=$(npm pack --dry-run 2>/dev/null)
+          PACKAGE_SIZE=$(echo "$PACK_OUTPUT" | grep "package size:" | awk '{print $3" "$4}')
+          if [ -z "$PACKAGE_SIZE" ]; then
+            # Fallback: look for any size-related info
+            PACKAGE_SIZE=$(echo "$PACK_OUTPUT" | grep -E "(size|Size)" | tail -1 | awk '{print $(NF-1)" "$NF}')
+          fi
+          echo "📦 Package size: ${PACKAGE_SIZE:-"Unknown"}"
           
       - name: Verify binary executables
         shell: bash
