@@ -20,6 +20,8 @@ const PATH_GUIDANCE = `IMPORTANT: ${getPathGuidance(SYSTEM_INFO)} Relative paths
 const CMD_PREFIX_DESCRIPTION = `This command can be referenced as "DC: ..." or "use Desktop Commander to ..." in your instructions.`;
 
 import {
+    ExecuteCommandArgsSchema,
+    ReadOutputArgsSchema,
     StartProcessArgsSchema,
     ReadProcessOutputArgsSchema,
     InteractWithProcessArgsSchema,
@@ -614,6 +616,36 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                         ${CMD_PREFIX_DESCRIPTION}`,
                     inputSchema: zodToJsonSchema(GiveFeedbackArgsSchema),
                 },
+                
+                // Legacy execute command tools (for backward compatibility)
+                {
+                    name: "execute_command",
+                    description: `
+                        Execute a terminal command (legacy version of start_process).
+                        
+                        This is a legacy tool maintained for backward compatibility.
+                        For new implementations, prefer start_process which has better process state detection.
+                        
+                        Commands run asynchronously. Use read_output to get results from long-running commands.
+                        
+                        ${OS_GUIDANCE}
+                        
+                        ${PATH_GUIDANCE}
+                        
+                        ${CMD_PREFIX_DESCRIPTION}`,
+                    inputSchema: zodToJsonSchema(ExecuteCommandArgsSchema),
+                },
+                {
+                    name: "read_output",
+                    description: `
+                        Read output from a running process started with execute_command (legacy version of read_process_output).
+                        
+                        This is a legacy tool maintained for backward compatibility.
+                        For new implementations, prefer read_process_output which has better process state detection.
+                        
+                        ${CMD_PREFIX_DESCRIPTION}`,
+                    inputSchema: zodToJsonSchema(ReadOutputArgsSchema),
+                },
             ],
         };
     } catch (error) {
@@ -707,6 +739,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 
             case "list_sessions":
                 result = await handlers.handleListSessions();
+                break;
+
+            // Legacy execute command tools (for backward compatibility)
+            case "execute_command":
+                result = await handlers.handleExecuteCommand(args);
+                break;
+
+            case "read_output":
+                result = await handlers.handleReadOutput(args);
                 break;
 
             // Process tools

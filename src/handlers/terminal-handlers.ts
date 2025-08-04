@@ -7,6 +7,13 @@ import {
 } from '../tools/improved-process-tools.js';
 
 import { 
+    executeCommand,
+    readOutput
+} from '../tools/execute.js';
+
+import { 
+    ExecuteCommandArgsSchema,
+    ReadOutputArgsSchema,
     StartProcessArgsSchema,
     ReadProcessOutputArgsSchema,
     InteractWithProcessArgsSchema,
@@ -52,4 +59,20 @@ export async function handleForceTerminate(args: unknown): Promise<ServerResult>
  */
 export async function handleListSessions(): Promise<ServerResult> {
     return listSessions();
+}
+
+/**
+ * Handle execute_command command
+ */
+export async function handleExecuteCommand(args: unknown): Promise<ServerResult> {
+    const parsed = ExecuteCommandArgsSchema.parse(args);
+    return executeCommand(parsed);
+}
+
+/**
+ * Handle read_output command
+ */
+export async function handleReadOutput(args: unknown): Promise<ServerResult> {
+    const parsed = ReadOutputArgsSchema.parse(args);
+    return readOutput(parsed);
 }
