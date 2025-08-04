@@ -25,6 +25,11 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Configure Git
         run: |
           git config --local user.email "action@github.com"
