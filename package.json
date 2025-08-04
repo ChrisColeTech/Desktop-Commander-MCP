@@ -1,6 +1,6 @@
 {
   "name": "@chriscoletech/desktop-commander-mcp",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "MCP server for terminal operations and file editing",
   "license": "MIT",
   "author": "Chris Cole",
