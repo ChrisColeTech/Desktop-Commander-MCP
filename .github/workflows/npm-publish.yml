@@ -157,14 +157,16 @@ jobs:
             # Configure git to auto-resolve conflicts favoring release branch
             git config merge.ours.driver true
             
-            # Attempt automatic merge with strategy
-            if git merge origin/release -X theirs -m "chore: sync release v${{ env.NEW_VERSION }} to main branch
+            # Attempt automatic merge with strategy  
+            COMMIT_MSG="chore: sync release v${{ env.NEW_VERSION }} to main branch
 
 Automated merge from release branch after successful NPM publish.
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
-Co-Authored-By: Claude <noreply@anthropic.com>"; then
+Co-Authored-By: Claude <noreply@anthropic.com>"
+            
+            if git merge origin/release -X theirs -m "$COMMIT_MSG"; then
               echo "✅ Automatic merge successful"
             else
               echo "❌ Merge conflicts detected, attempting resolution..."
