@@ -15,8 +15,6 @@ on:
   push:
     branches:
       - release
-    tags:
-      - 'v*'
 
 permissions:
   contents: write
@@ -127,9 +125,17 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Sync release to main branch
+        if: success()
+        run: |
+          git checkout main || git checkout -b main
+          git merge origin/release --ff-only
+          git push origin main
+
       - name: Notify Success
         if: success()
         run: |
           echo "✅ Successfully published @chriscoletech/desktop-commander-mcp@${{ env.NEW_VERSION }} to NPM"
           echo "📦 Package: https://www.npmjs.com/package/@chriscoletech/desktop-commander-mcp"
           echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ env.NEW_VERSION }}"
+          echo "🔄 Main branch synced with release"
