@@ -29,9 +29,11 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
+        env:
+          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
         run: |
-          # Try npm ci first, fallback to npm install if ripgrep fails
-          npm ci || npm install --no-optional
+          # Skip binary download for @vscode/ripgrep and try install
+          npm ci || npm install --ignore-scripts
 
       - name: Run build
         run: npm run build
