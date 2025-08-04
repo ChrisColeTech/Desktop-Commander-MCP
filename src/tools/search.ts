@@ -95,11 +95,11 @@ export async function searchCode(options: {
     // of running search processes if needed for management
     (globalThis as any).currentSearchProcess = childProcess;
     
-    rg.stdout.on('data', (data) => {
+    rg.stdout?.on('data', (data) => {
       stdoutBuffer += data.toString();
     });
     
-    rg.stderr.on('data', (data) => {
+    rg.stderr?.on('data', (data) => {
       console.error(`ripgrep error: ${data}`);
     });
     
