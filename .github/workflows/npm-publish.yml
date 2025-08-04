@@ -13,6 +13,8 @@ on:
           - minor
           - major
   push:
+    branches:
+      - release
     tags:
       - 'v*'
 
@@ -57,6 +59,12 @@ jobs:
           npm version ${{ github.event.inputs.version_type }} --no-git-tag-version
           echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
+      - name: Bump version (release branch push)
+        if: github.ref == 'refs/heads/release'
+        run: |
+          npm version patch --no-git-tag-version
+          echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
       - name: Extract version from tag (tag trigger)
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -77,6 +85,15 @@ jobs:
           git commit -m "chore: bump version to v${{ env.NEW_VERSION }}"
           git tag "v${{ env.NEW_VERSION }}"
           git push origin main
+          git push origin "v${{ env.NEW_VERSION }}"
+
+      - name: Commit version bump (release branch push)
+        if: github.ref == 'refs/heads/release'
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to v${{ env.NEW_VERSION }}"
+          git tag "v${{ env.NEW_VERSION }}"
+          git push origin release
           git push origin "v${{ env.NEW_VERSION }}"
 
       - name: Create GitHub Release
