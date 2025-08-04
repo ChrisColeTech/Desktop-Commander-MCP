@@ -130,6 +130,6 @@ jobs:
       - name: Notify Success
         if: success()
         run: |
-          echo "✅ Successfully published @wonderwhy-er/desktop-commander@${{ env.NEW_VERSION }} to NPM"
-          echo "📦 Package: https://www.npmjs.com/package/@wonderwhy-er/desktop-commander"
+          echo "✅ Successfully published @chriscoletech/desktop-commander-mcp@${{ env.NEW_VERSION }} to NPM"
+          echo "📦 Package: https://www.npmjs.com/package/@chriscoletech/desktop-commander-mcp"
           echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ env.NEW_VERSION }}"

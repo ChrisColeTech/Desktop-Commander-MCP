@@ -1,11 +1,11 @@
 {
-  "name": "@wonderwhy-er/desktop-commander",
+  "name": "@chriscoletech/desktop-commander-mcp",
   "version": "0.2.7",
   "description": "MCP server for terminal operations and file editing",
   "license": "MIT",
-  "author": "Eduards Ruzga",
-  "homepage": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
-  "bugs": "https://github.com/wonderwhy-er/DesktopCommanderMCP/issues",
+  "author": "Chris Cole",
+  "homepage": "https://github.com/ChrisColeTech/Desktop-Commander-MCP",
+  "bugs": "https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues",
   "type": "module",
   "engines": {
     "node": ">=18.0.0"
