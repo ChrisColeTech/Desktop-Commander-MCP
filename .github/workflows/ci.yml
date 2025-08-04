@@ -32,6 +32,7 @@ jobs:
         run: npm ci
 
       - name: Run linting (if available)
+        shell: bash
         run: |
           if npm run lint --if-present; then
             echo "✅ Linting passed"
@@ -40,6 +41,7 @@ jobs:
           fi
 
       - name: Run type checking
+        shell: bash
         run: |
           if npm run typecheck --if-present; then
             echo "✅ Type checking passed"
@@ -82,16 +84,19 @@ jobs:
         run: npm ci
 
       - name: Build and verify package
+        shell: bash
         run: |
           npm run build
           npm pack --dry-run
           
       - name: Check package size
+        shell: bash
         run: |
           PACKAGE_SIZE=$(npm pack --dry-run --silent | grep "tarball size:" | awk '{print $3}')
           echo "📦 Package size: $PACKAGE_SIZE"
           
       - name: Verify binary executables
+        shell: bash
         run: |
           npm run build
           if [ -f "dist/index.js" ]; then
