@@ -28,6 +28,10 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update && sudo apt-get install -y ripgrep
+
       - name: Install dependencies
         env:
           VSCODE_RIPGREP_SKIP_DOWNLOAD: 1

@@ -33,6 +33,16 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install ripgrep
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            sudo apt-get update && sudo apt-get install -y ripgrep
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            brew install ripgrep
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            choco install ripgrep
+          fi
+
       - name: Install dependencies
         env:
           VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
