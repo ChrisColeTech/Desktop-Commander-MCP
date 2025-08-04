@@ -52,7 +52,9 @@ jobs:
           fi
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          # Try npm ci first, fallback to npm install if ripgrep fails
+          npm ci || npm install --no-optional
 
       - name: Run validation suite
         id: validation

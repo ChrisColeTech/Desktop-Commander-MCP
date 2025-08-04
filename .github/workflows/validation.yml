@@ -24,7 +24,9 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          # Try npm ci first, fallback to npm install if ripgrep fails
+          npm ci || npm install --no-optional
 
       - name: Run build
         run: npm run build
