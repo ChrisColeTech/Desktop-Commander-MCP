@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18, 20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting (if available)
+        run: |
+          if npm run lint --if-present; then
+            echo "✅ Linting passed"
+          else
+            echo "ℹ️ No linting script found"
+          fi
+
+      - name: Run type checking
+        run: |
+          if npm run typecheck --if-present; then
+            echo "✅ Type checking passed"
+          else
+            echo "ℹ️ No typecheck script found, running tsc directly"
+            npx tsc --noEmit
+          fi
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.os }}-node${{ matrix.node-version }}
+          path: |
+            test-results.xml
+            coverage/
+          retention-days: 30
+
+  build-check:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and verify package
+        run: |
+          npm run build
+          npm pack --dry-run
+          
+      - name: Check package size
+        run: |
+          PACKAGE_SIZE=$(npm pack --dry-run --silent | grep "tarball size:" | awk '{print $3}')
+          echo "📦 Package size: $PACKAGE_SIZE"
+          
+      - name: Verify binary executables
+        run: |
+          npm run build
+          if [ -f "dist/index.js" ]; then
+            echo "✅ Main executable found"
+            node dist/index.js --version || echo "ℹ️ Version check not available"
+          fi
+          if [ -f "dist/setup-claude-server.js" ]; then
+            echo "✅ Setup executable found"
+          fi

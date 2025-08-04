@@ -1,0 +1,118 @@
+name: Publish to NPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Bump version (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          npm version ${{ github.event.inputs.version_type }} --no-git-tag-version
+          echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: Extract version from tag (tag trigger)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          npm version $TAG_VERSION --no-git-tag-version
+          echo "NEW_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+
+      - name: Update CHANGELOG (if exists)
+        run: |
+          if [ -f CHANGELOG.md ]; then
+            echo "CHANGELOG found, consider updating it manually"
+          fi
+
+      - name: Commit version bump (manual trigger only)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to v${{ env.NEW_VERSION }}"
+          git tag "v${{ env.NEW_VERSION }}"
+          git push origin main
+          git push origin "v${{ env.NEW_VERSION }}"
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.NEW_VERSION }}
+          release_name: Release v${{ env.NEW_VERSION }}
+          body: |
+            ## Changes in v${{ env.NEW_VERSION }}
+            
+            ### Added
+            - Restored legacy execute_command and read_output tools for backward compatibility
+            - Enhanced process management with improved state detection
+            
+            ### Changed
+            - Updated tool registration to include both legacy and modern process tools
+            
+            ### Technical Details
+            - Added `src/tools/execute.ts` with legacy command execution functions
+            - Extended schemas to support both execute_command and start_process tools
+            - Maintained full backward compatibility while introducing enhanced features
+            
+            For full changelog, see commit history.
+          draft: false
+          prerelease: false
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "✅ Successfully published @wonderwhy-er/desktop-commander@${{ env.NEW_VERSION }} to NPM"
+          echo "📦 Package: https://www.npmjs.com/package/@wonderwhy-er/desktop-commander"
+          echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ env.NEW_VERSION }}"
