@@ -161,7 +161,6 @@ jobs:
             if git merge origin/release -X theirs -m "chore: sync release v${{ env.NEW_VERSION }} to main branch
 
 Automated merge from release branch after successful NPM publish.
-Includes version bump and all release-ready changes.
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
