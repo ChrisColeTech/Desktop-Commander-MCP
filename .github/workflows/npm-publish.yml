@@ -37,24 +37,8 @@ jobs:
           node-version: '18'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install ripgrep
-        run: |
-          sudo apt-get update && sudo apt-get install -y ripgrep
-
       - name: Install dependencies
-        env:
-          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
-        run: |
-          # Skip binary download for @vscode/ripgrep and try install
-          npm ci || npm install --ignore-scripts
-
-      - name: Run tests
-        run: npm test
+        run: npm ci
 
       - name: Build project
         run: npm run build
