@@ -96,30 +96,7 @@ Restart Claude if running.
 **🔄 Manual Update:** Run the setup command again  
 **🗑️ Uninstall:** Run `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 
-### Option 2: Using bash script installer (macOS) ⭐ **Auto-Updates**
-For macOS users, you can use our automated bash installer which will check your Node.js version, install it if needed, and automatically configure Desktop Commander:
-```
-curl -fsSL https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/refs/heads/main/install.sh | bash
-```
-This script handles all dependencies and configuration automatically for a seamless setup experience.
-
-**✅ Auto-Updates:** Yes - requires manual updates  
-**🔄 Manual Update:** Re-run the bash installer command above  
-**🗑️ Uninstall:** Remove the MCP server entry from your Claude config file and delete the cloned repository if it exists
-
-### Option 3: Installing via Smithery ⭐ **Auto-Updates**
-
-To install Desktop Commander for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@chriscoletech/desktop-commander-mcp):
-
-```bash
-npx -y @smithery/cli install @chriscoletech/desktop-commander-mcp --client claude
-```
-
-**✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
-**🔄 Manual Update:** Re-run the Smithery install command  
-**🗑️ Uninstall:** `npx -y @smithery/cli uninstall @chriscoletech/desktop-commander-mcp --client claude`
-
-### Option 4: Add to claude_desktop_config manually ❌ **Manual Updates**
+### Option 2: Add to claude_desktop_config manually ❌ **Manual Updates**
 Add this entry to your claude_desktop_config.json:
 
 - On Mac: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
@@ -145,41 +122,50 @@ Restart Claude if running.
 **🔄 Manual Update:** Usually automatic via npx, but if issues occur, update your config file or re-add the entry  
 **🗑️ Uninstall:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
 
-### Option 5: Checkout locally ❌ **Manual Updates**
+### Option 3: Local Development Setup ❌ **Manual Updates**
+For development or if you want to run from source:
+
 1. Clone and build:
 ```bash
 git clone https://github.com/ChrisColeTech/Desktop-Commander-MCP.git
-cd DesktopCommanderMCP
-npm run setup
+cd Desktop-Commander-MCP
+npm install
+npm run build
 ```
-Restart Claude if running.
 
-The setup command will:
-- Install dependencies
-- Build the server
-- Configure Claude's desktop app
-- Add MCP servers to Claude's config if needed
+2. Add to your claude_desktop_config.json:
+```json
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/Desktop-Commander-MCP/dist/index.js"
+      ]
+    }
+  }
+}
+```
 
-**❌ Auto-Updates:** No - requires manual git updates  
-**🔄 Manual Update:** `cd DesktopCommanderMCP && git pull && npm run setup`  
-**🗑️ Uninstall:** Remove the cloned directory and remove MCP server entry from Claude config
+3. Restart Claude Desktop.
+
+**❌ Auto-Updates:** No - requires manual git pull and rebuild  
+**🔄 Manual Update:** `cd Desktop-Commander-MCP && git pull && npm run build`  
+**🗑️ Uninstall:** Delete the cloned directory and remove MCP server entry from Claude config
 
 ## Updating & Uninstalling Desktop Commander
 
-### Automatic Updates (Options 1 & 3 only)
-**Options 1 (npx) and 3 (Smithery)** automatically update to the latest version whenever you restart Claude. No manual intervention needed.
+### Automatic Updates (Option 1 only)
+**Option 1 (npx setup)** automatically updates to the latest version whenever you restart Claude. No manual intervention needed.
 
-### Manual Updates (Options 2, 4 & 5)
-- **Option 2 (bash installer):** Re-run the curl command
-- **Option 4 (manual config):** Usually automatic via npx, but re-add config entry if issues occur
-- **Option 5 (local checkout):** `cd DesktopCommanderMCP && git pull && npm run setup`
+### Manual Updates (Options 2 & 3)
+- **Option 2 (manual config):** Usually automatic via npx, but re-add config entry if issues occur
+- **Option 3 (local development):** `cd Desktop-Commander-MCP && git pull && npm run build`
 
 ### Uninstalling Desktop Commander
 - **Option 1:** `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
-- **Option 2:** Remove MCP server entry from Claude config and delete any cloned repositories
-- **Option 3:** `npx -y @smithery/cli uninstall @chriscoletech/desktop-commander-mcp --client claude`
-- **Option 4:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
-- **Option 5:** Delete the cloned directory and remove MCP server entry from Claude config
+- **Option 2:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
+- **Option 3:** Delete the cloned directory and remove MCP server entry from Claude config
 
 After uninstalling, restart Claude Desktop to complete the removal.
 
