@@ -97,25 +97,6 @@ Desktop Commander provides these tools through the Model Context Protocol:
 - **`get_usage_stats`** - Get usage statistics for debugging
 - **`give_feedback_to_desktop_commander`** - Open feedback form in browser
 
-## 📋 CLI Options
-
-```bash
-Desktop Commander MCP Server
-
-Usage: desktop-commander [options]
-
-Options:
-  --setup         Run interactive setup wizard
-  --debug         Enable debug mode with verbose logging
-  --verbose       Enable detailed output
-  --dev           Start in development mode with hot reload
-  --status        Check server status
-  --logs          View server logs
-  --port <port>   Specify port (default: 3000)
-  --config <path> Custom config file path
-  -h, --help      Display help information
-  -v, --version   Display version number
-```
 
 ## 🔐 Claude Desktop Configuration
 
