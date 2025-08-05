@@ -123,43 +123,45 @@ desktop-commander --status
 desktop-commander --logs
 ```
 
-## 💡 Usage Examples
 
-### File Management
-```
-"Show me all TypeScript files in the src directory"
-"Read the package.json file and explain the dependencies"
-"Create a new component file in src/components/Button.tsx"
-"Search for all instances of 'useEffect' in my React components"
-```
+## 🔧 Available MCP Tools
 
-### Terminal & Process Management
-```
-"Run 'npm install' and show me the output"
-"Start the development server and keep it running"
-"Check if port 3000 is in use"
-"Kill the process running on port 8080"
-"Show me the last 20 lines of the server logs"
-```
+Desktop Commander provides these tools through the Model Context Protocol:
 
-### Code Analysis & Development
-```
-"Analyze this JSON file and show me its structure"
-"Compare these two files and highlight the differences"
-"Run the test suite and explain any failures"
-"Execute this Python script: print('Hello World')"
-"Search for security vulnerabilities in package.json"
-```
+### File System Operations
+- **`read_file`** - Read file contents with optional offset/length parameters
+- **`read_multiple_files`** - Read multiple files simultaneously  
+- **`write_file`** - Write or append to files
+- **`create_directory`** - Create directories or ensure they exist
+- **`list_directory`** - Get detailed directory listings
+- **`move_file`** - Move or rename files and directories
+- **`get_file_info`** - Get detailed file/directory metadata
 
-### Data Processing
-```
-"Load this CSV file and show me the first 10 rows"
-"Calculate statistics for the 'price' column in data.csv"
-"Parse this JSON API response and extract user emails"
-"Convert this CSV to JSON format"
-```
+### File Search & Code Analysis  
+- **`search_files`** - Find files by name (substring matching)
+- **`search_code`** - Search text/code patterns in files using ripgrep
+- **`edit_block`** - Apply surgical text replacements to files
 
-## 📋 All CLI Options
+### Process & Terminal Management
+- **`start_process`** - Start terminal processes with intelligent state detection
+- **`read_process_output`** - Read output from running processes  
+- **`interact_with_process`** - Send input to processes and get responses
+- **`list_sessions`** - List all active terminal sessions
+- **`force_terminate`** - Force terminate terminal sessions
+- **`list_processes`** - List all running system processes
+- **`kill_process`** - Terminate processes by PID
+
+### Legacy Terminal Tools (Backward Compatibility)
+- **`execute_command`** - Execute terminal commands (legacy)
+- **`read_output`** - Read command output (legacy)
+
+### Configuration & Utilities
+- **`get_config`** - Get complete server configuration as JSON
+- **`set_config_value`** - Set specific configuration values
+- **`get_usage_stats`** - Get usage statistics for debugging
+- **`give_feedback_to_desktop_commander`** - Open feedback form in browser
+
+## 📋 CLI Options
 
 ```bash
 Desktop Commander MCP Server
@@ -194,9 +196,6 @@ Desktop Commander integrates with Claude Desktop through MCP (Model Context Prot
 }
 ```
 
-## 🔐 Advanced Configuration
-
-The server supports various configuration options through environment variables or config files. Use `desktop-commander setup` to configure these interactively, or see the full documentation for manual setup.
 
 ## 📚 Documentation
 
