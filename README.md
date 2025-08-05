@@ -75,10 +75,25 @@ The setup wizard will guide you through:
 
 ### 2. Start Using in Claude
 
-Open Claude Desktop and try:
-- "Show me the files in my project directory"
-- "Run `npm test` and show me any failing tests"
-- "Search for TODO comments in my codebase"
+Open Claude Desktop and try these commands:
+
+**📁 File Operations:**
+- "Show me the files in my current directory"
+- "Read the contents of package.json"
+- "Search for 'TODO' comments in my codebase"
+- "Create a new file called test.js with a hello world function"
+
+**🖥️ Terminal Commands:**
+- "Run `npm test` and show me the results"
+- "Execute `git status` to see the current repo state"
+- "Start a development server with `npm run dev`"
+- "List all running processes"
+
+**🔍 Code Analysis:**
+- "Analyze this CSV file: data.csv"
+- "Search for all functions containing 'auth' in my project"
+- "Show me the differences between two files"
+- "Find all TypeScript files with errors"
 
 ## 🚀 CLI Usage
 
@@ -106,6 +121,42 @@ desktop-commander --status
 
 # View server logs
 desktop-commander --logs
+```
+
+## 💡 Usage Examples
+
+### File Management
+```
+"Show me all TypeScript files in the src directory"
+"Read the package.json file and explain the dependencies"
+"Create a new component file in src/components/Button.tsx"
+"Search for all instances of 'useEffect' in my React components"
+```
+
+### Terminal & Process Management
+```
+"Run 'npm install' and show me the output"
+"Start the development server and keep it running"
+"Check if port 3000 is in use"
+"Kill the process running on port 8080"
+"Show me the last 20 lines of the server logs"
+```
+
+### Code Analysis & Development
+```
+"Analyze this JSON file and show me its structure"
+"Compare these two files and highlight the differences"
+"Run the test suite and explain any failures"
+"Execute this Python script: print('Hello World')"
+"Search for security vulnerabilities in package.json"
+```
+
+### Data Processing
+```
+"Load this CSV file and show me the first 10 rows"
+"Calculate statistics for the 'price' column in data.csv"
+"Parse this JSON API response and extract user emails"
+"Convert this CSV to JSON format"
 ```
 
 ## 📋 All CLI Options

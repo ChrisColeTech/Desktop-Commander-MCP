@@ -18,7 +18,7 @@
 Work with code and text, run processes, and automate tasks, going far beyond other AI editors - without API token costs.
 
 
-![Desktop Commander MCP](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/docs/vertical_video_mobile.mp4)
+![Desktop Commander MCP](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/docs/vertical_video_mobile.mp4)
 
 <a href="https://glama.ai/mcp/servers/zempur9oh4">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/zempur9oh4/badge" alt="Desktop Commander MCP" />
@@ -83,23 +83,23 @@ First, ensure you've downloaded and installed the [Claude Desktop app](https://c
 ### Option 1: Install through npx ⭐ **Auto-Updates**
 Just run this in terminal:
 ```
-npx @wonderwhy-er/desktop-commander@latest setup
+npx @chriscoletech/desktop-commander-mcp@latest setup
 ```
 
 For debugging mode (allows Node.js inspector connection):
 ```
-npx @wonderwhy-er/desktop-commander@latest setup --debug
+npx @chriscoletech/desktop-commander-mcp@latest setup --debug
 ```
 Restart Claude if running.
 
 **✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
 **🔄 Manual Update:** Run the setup command again  
-**🗑️ Uninstall:** Run `npx @wonderwhy-er/desktop-commander@latest setup --uninstall`
+**🗑️ Uninstall:** Run `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 
 ### Option 2: Using bash script installer (macOS) ⭐ **Auto-Updates**
 For macOS users, you can use our automated bash installer which will check your Node.js version, install it if needed, and automatically configure Desktop Commander:
 ```
-curl -fsSL https://raw.githubusercontent.com/wonderwhy-er/DesktopCommanderMCP/refs/heads/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/refs/heads/main/install.sh | bash
 ```
 This script handles all dependencies and configuration automatically for a seamless setup experience.
 
@@ -109,15 +109,15 @@ This script handles all dependencies and configuration automatically for a seaml
 
 ### Option 3: Installing via Smithery ⭐ **Auto-Updates**
 
-To install Desktop Commander for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@wonderwhy-er/desktop-commander):
+To install Desktop Commander for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@chriscoletech/desktop-commander-mcp):
 
 ```bash
-npx -y @smithery/cli install @wonderwhy-er/desktop-commander --client claude
+npx -y @smithery/cli install @chriscoletech/desktop-commander-mcp --client claude
 ```
 
 **✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
 **🔄 Manual Update:** Re-run the Smithery install command  
-**🗑️ Uninstall:** `npx -y @smithery/cli uninstall @wonderwhy-er/desktop-commander --client claude`
+**🗑️ Uninstall:** `npx -y @smithery/cli uninstall @chriscoletech/desktop-commander-mcp --client claude`
 
 ### Option 4: Add to claude_desktop_config manually ❌ **Manual Updates**
 Add this entry to your claude_desktop_config.json:
@@ -133,7 +133,7 @@ Add this entry to your claude_desktop_config.json:
       "command": "npx",
       "args": [
         "-y",
-        "@wonderwhy-er/desktop-commander"
+        "@chriscoletech/desktop-commander-mcp"
       ]
     }
   }
@@ -148,7 +148,7 @@ Restart Claude if running.
 ### Option 5: Checkout locally ❌ **Manual Updates**
 1. Clone and build:
 ```bash
-git clone https://github.com/wonderwhy-er/DesktopCommanderMCP.git
+git clone https://github.com/ChrisColeTech/Desktop-Commander-MCP.git
 cd DesktopCommanderMCP
 npm run setup
 ```
@@ -175,9 +175,9 @@ The setup command will:
 - **Option 5 (local checkout):** `cd DesktopCommanderMCP && git pull && npm run setup`
 
 ### Uninstalling Desktop Commander
-- **Option 1:** `npx @wonderwhy-er/desktop-commander@latest setup --uninstall`
+- **Option 1:** `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 - **Option 2:** Remove MCP server entry from Claude config and delete any cloned repositories
-- **Option 3:** `npx -y @smithery/cli uninstall @wonderwhy-er/desktop-commander --client claude`
+- **Option 3:** `npx -y @smithery/cli uninstall @chriscoletech/desktop-commander-mcp --client claude`
 - **Option 4:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
 - **Option 5:** Delete the cloned directory and remove MCP server entry from Claude config
 
@@ -454,7 +454,7 @@ If you need to debug the server, you can install it in debug mode:
 
 ```bash
 # Using npx
-npx @wonderwhy-er/desktop-commander@latest setup --debug
+npx @chriscoletech/desktop-commander-mcp@latest setup --debug
 
 # Or if installed locally
 npm run setup:debug
@@ -506,7 +506,7 @@ Terminal still can access files ignoring allowed directories.
 - **11-04-2025 Shell configuration** - Added ability to configure preferred shell for command execution
 - **07-04-2025 Added URL support** - `read_file` command can now fetch content from URLs
 - **28-03-2025 Fixed "Watching /" JSON error** - Implemented custom stdio transport to handle non-JSON messages and prevent server crashes
-- **25-03-2025 Better code search** ([merged](https://github.com/wonderwhy-er/ClaudeServerCommander/pull/17)) - Enhanced code exploration with context-aware results
+- **25-03-2025 Better code search** ([merged](https://github.com/ChrisColeTech/Desktop-Commander-MCP/pull/17)) - Enhanced code exploration with context-aware results
 
 ## Work in Progress/TODOs/Roadmap
 
@@ -530,10 +530,10 @@ The following features are currently being explored:
     <p>Our philosophy is simple: we don't want you to pay for it if you're not successful. But if Desktop Commander contributes to your success, please consider contributing to ours.</p>
     <p><strong>Ways to support:</strong></p>
     <ul style="list-style-type: none; padding: 0;">
-      <li>🌟 <a href="https://github.com/sponsors/wonderwhy-er"><strong>GitHub Sponsors</strong></a> - Recurring support</li>
+      <li>🌟 <a href="https://github.com/sponsors/ChrisColeTech"><strong>GitHub Sponsors</strong></a> - Recurring support</li>
       <li>☕ <a href="https://www.buymeacoffee.com/wonderwhyer"><strong>Buy Me A Coffee</strong></a> - One-time contributions</li>
       <li>💖 <a href="https://www.patreon.com/c/EduardsRuzga"><strong>Patreon</strong></a> - Become a patron and support us monthly</li>
-      <li>⭐ <a href="https://github.com/wonderwhy-er/DesktopCommanderMCP"><strong>Star on GitHub</strong></a> - Help others discover the project</li>
+      <li>⭐ <a href="https://github.com/ChrisColeTech/Desktop-Commander-MCP"><strong>Star on GitHub</strong></a> - Help others discover the project</li>
     </ul>
   </div>
 </div>
@@ -599,32 +599,32 @@ Join our [Discord server](https://discord.gg/kQ27sNnZr7) to get help, share feed
 
 ## Testimonials
 
-[![It's a life saver! I paid Claude + Cursor currently which I always feel it's kind of duplicated. This solves the problem ultimately. I am so happy. Thanks so much. Plus today Claude has added the web search support. With this MCP + Internet search, it writes the code with the latest updates. It's so good when Cursor doesn't work sometimes or all the fast requests are used.](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/testemonials/img.png) https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgyyBt6_ShdDX_rIOad4AaABAg
+[![It's a life saver! I paid Claude + Cursor currently which I always feel it's kind of duplicated. This solves the problem ultimately. I am so happy. Thanks so much. Plus today Claude has added the web search support. With this MCP + Internet search, it writes the code with the latest updates. It's so good when Cursor doesn't work sometimes or all the fast requests are used.](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/testemonials/img.png) https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgyyBt6_ShdDX_rIOad4AaABAg
 ](https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgyyBt6_ShdDX_rIOad4AaABAg
 )
 
-[![This is the first comment I've ever left on a youtube video, THANK YOU! I've been struggling to update an old Flutter app in Cursor from an old pre null-safety version to a current version and implemented null-safety using Claude 3.7. I got most of the way but had critical BLE errors that I spent days trying to resolve with no luck. I tried Augment Code but it didn't get it either. I implemented your MCP in Claude desktop and was able to compare the old and new codebase fully, accounting for the updates in the code, and fix the issues in a couple of hours. A word of advice to people trying this, be sure to stage changes and commit when appropriate to be able to undo unwanted changes. Amazing!](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/testemonials/img_1.png)
+[![This is the first comment I've ever left on a youtube video, THANK YOU! I've been struggling to update an old Flutter app in Cursor from an old pre null-safety version to a current version and implemented null-safety using Claude 3.7. I got most of the way but had critical BLE errors that I spent days trying to resolve with no luck. I tried Augment Code but it didn't get it either. I implemented your MCP in Claude desktop and was able to compare the old and new codebase fully, accounting for the updates in the code, and fix the issues in a couple of hours. A word of advice to people trying this, be sure to stage changes and commit when appropriate to be able to undo unwanted changes. Amazing!](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/testemonials/img_1.png)
 https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgztdHvDMqTb9jiqnf54AaABAg](https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgztdHvDMqTb9jiqnf54AaABAg
 )
 
 [![Great! I just used Windsurf, bought license a week ago, for upgrading old fullstack socket project and it works many times good or ok but also many times runs away in cascade and have to revert all changes losing hundereds of cascade tokens. In just a week down to less than 100 tokens and do not want to buy only 300 tokens for 10$. This Claude MCP ,bought claude Pro finally needed but wanted very good reason to also have next to ChatGPT, and now can code as much as I want not worrying about token cost.
-Also this is much more than code editing it is much more thank you for great video!](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/testemonials/img_2.png)
+Also this is much more than code editing it is much more thank you for great video!](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/testemonials/img_2.png)
 https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgyQFTmYLJ4VBwIlmql4AaABAg](https://www.youtube.com/watch?v=ly3bed99Dy8&lc=UgyQFTmYLJ4VBwIlmql4AaABAg)
 
-[![it is a great tool, thank you, I like using it, as it gives claude an ability to do surgical edits, making it more like a human developer.](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/testemonials/img_3.png)
+[![it is a great tool, thank you, I like using it, as it gives claude an ability to do surgical edits, making it more like a human developer.](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/testemonials/img_3.png)
 https://www.youtube.com/watch?v=ly3bed99Dy8&lc=Ugy4-exy166_Ma7TH-h4AaABAg](https://www.youtube.com/watch?v=ly3bed99Dy8&lc=Ugy4-exy166_Ma7TH-h4AaABAg)
 
 [![You sir are my hero. You've pretty much summed up and described my experiences of late, much better than I could have. Cursor and Windsurf both had me frustrated to the point where I was almost yelling at my computer screen. Out of whimsy, I thought to myself why not just ask Claude directly, and haven't looked back since.
 Claude first to keep my sanity in check, then if necessary, engage with other IDEs, frameworks, etc. I thought I was the only one, glad to see I'm not lol.
 33
-1](https://raw.githubusercontent.com/wonderwhy-er/ClaudeComputerCommander/main/testemonials/img_4.png)
+1](https://raw.githubusercontent.com/ChrisColeTech/Desktop-Commander-MCP/main/testemonials/img_4.png)
 https://medium.com/@pharmx/you-sir-are-my-hero-62cff5836a3e](https://medium.com/@pharmx/you-sir-are-my-hero-62cff5836a3e)
 
 If you find this project useful, please consider giving it a ⭐ star on GitHub! This helps others discover the project and encourages further development.
 
 We welcome contributions from the community! Whether you've found a bug, have a feature request, or want to contribute code, here's how you can help:
 
-- **Found a bug?** Open an issue at [github.com/wonderwhy-er/DesktopCommanderMCP/issues](https://github.com/wonderwhy-er/DesktopCommanderMCP/issues)
+- **Found a bug?** Open an issue at [github.com/ChrisColeTech/Desktop-Commander-MCP/issues](https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues)
 - **Have a feature idea?** Submit a feature request in the issues section
 - **Want to contribute code?** Fork the repository, create a branch, and submit a pull request
 - **Questions or discussions?** Start a discussion in the GitHub Discussions tab
@@ -657,7 +657,7 @@ Yes, when installed through npx or Smithery, Desktop Commander automatically upd
 - Making surgical code changes with precise control
 
 ### I'm having trouble installing or using the tool. Where can I get help?
-Join our [Discord server](https://discord.gg/kQ27sNnZr7) for community support, check the [GitHub issues](https://github.com/wonderwhy-er/DesktopCommanderMCP/issues) for known problems, or review the [full FAQ](FAQ.md) for troubleshooting tips. You can also visit our [website FAQ section](https://desktopcommander.app#faq) for a more user-friendly experience. If you encounter a new issue, please consider [opening a GitHub issue](https://github.com/wonderwhy-er/DesktopCommanderMCP/issues/new) with details about your problem.
+Join our [Discord server](https://discord.gg/kQ27sNnZr7) for community support, check the [GitHub issues](https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues) for known problems, or review the [full FAQ](FAQ.md) for troubleshooting tips. You can also visit our [website FAQ section](https://desktopcommander.app#faq) for a more user-friendly experience. If you encounter a new issue, please consider [opening a GitHub issue](https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues/new) with details about your problem.
 
 ## Data Collection & Privacy
 
