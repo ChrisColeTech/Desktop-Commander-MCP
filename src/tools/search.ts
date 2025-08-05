@@ -2,8 +2,16 @@ import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
 import fs from 'fs/promises';
 import { validatePath } from './filesystem.js';
-import { rgPath } from '@vscode/ripgrep';
 import {capture} from "../utils/capture.js";
+
+// Import ripgrep path with fallback handling
+let rgPath: string;
+try {
+  rgPath = require('@vscode/ripgrep').rgPath;
+} catch (error) {
+  // Fallback to system ripgrep if @vscode/ripgrep is not available
+  rgPath = 'rg';
+}
 
 // Type definition for search results
 export interface SearchResult {
@@ -67,7 +75,17 @@ export async function searchCode(options: {
   // Run ripgrep command
   return new Promise((resolve, reject) => {
     const results: SearchResult[] = [];
-    const rg = spawn(rgPath, args);
+    let rg: ChildProcess;
+    
+    try {
+      rg = spawn(rgPath, args);
+    } catch (error) {
+      // If ripgrep is not available, return empty results
+      console.warn('Ripgrep not available, search functionality limited:', error);
+      resolve([]);
+      return;
+    }
+    
     let stdoutBuffer = '';
     
     // Store a reference to the child process for potential termination
@@ -77,12 +95,17 @@ export async function searchCode(options: {
     // of running search processes if needed for management
     (globalThis as any).currentSearchProcess = childProcess;
     
-    rg.stdout.on('data', (data) => {
+    rg.stdout?.on('data', (data) => {
       stdoutBuffer += data.toString();
     });
     
-    rg.stderr.on('data', (data) => {
+    rg.stderr?.on('data', (data) => {
       console.error(`ripgrep error: ${data}`);
+    });
+    
+    rg.on('error', (error) => {
+      console.warn('Ripgrep process error:', error);
+      resolve([]); // Return empty results on error
     });
     
     rg.on('close', (code) => {

@@ -1,9 +1,15 @@
 # Desktop Commander MCP
 ### Search, update, manage files and run terminal commands with AI
 
-[![npm downloads](https://img.shields.io/npm/dw/@wonderwhy-er/desktop-commander)](https://www.npmjs.com/package/@wonderwhy-er/desktop-commander)
-[![smithery badge](https://smithery.ai/badge/@wonderwhy-er/desktop-commander)](https://smithery.ai/server/@wonderwhy-er/desktop-commander)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg)](https://www.buymeacoffee.com/wonderwhyer)
+[![CI Status](https://github.com/ChrisColeTech/Desktop-Commander-MCP/workflows/Validation/badge.svg)](https://github.com/ChrisColeTech/Desktop-Commander-MCP/actions)
+[![NPM Version](https://img.shields.io/npm/v/@chriscoletech/desktop-commander-mcp.svg)](https://www.npmjs.com/package/@chriscoletech/desktop-commander-mcp)
+[![NPM Downloads](https://img.shields.io/npm/dm/@chriscoletech/desktop-commander-mcp.svg)](https://www.npmjs.com/package/@chriscoletech/desktop-commander-mcp)
+[![GitHub Stars](https://img.shields.io/github/stars/ChrisColeTech/Desktop-Commander-MCP.svg)](https://github.com/ChrisColeTech/Desktop-Commander-MCP/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![Node Version](https://img.shields.io/node/v/@chriscoletech/desktop-commander-mcp.svg)](https://nodejs.org/)
+[![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/ChrisColeTech/Desktop-Commander-MCP)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 
 [![Discord](https://img.shields.io/badge/Join%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/kQ27sNnZr7)

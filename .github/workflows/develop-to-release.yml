@@ -1,0 +1,196 @@
+name: Develop to Release PR
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Auto-merge from release branch (prevent conflicts)
+        id: automerge
+        run: |
+          git fetch origin release || echo "Release branch doesn't exist yet"
+          if git show-ref --verify --quiet refs/remotes/origin/release; then
+            echo "Release branch exists, checking for conflicts..."
+            git checkout develop
+            if git merge origin/release --no-commit --no-ff 2>/dev/null; then
+              git merge --abort 2>/dev/null || true
+              echo "conflicts=false" >> $GITHUB_OUTPUT
+              echo "✅ No conflicts with release branch"
+            else
+              git merge --abort 2>/dev/null || true
+              echo "conflicts=true" >> $GITHUB_OUTPUT
+              echo "⚠️ Merge conflicts detected with release branch"
+            fi
+          else
+            echo "conflicts=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Release branch doesn't exist yet"
+          fi
+
+      - name: Install dependencies
+        env:
+          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
+        run: |
+          # Skip binary download for @vscode/ripgrep and try install
+          npm ci || npm install --ignore-scripts
+
+      - name: Run validation suite
+        id: validation
+        run: |
+          echo "Running full validation suite..."
+          
+          # Build check
+          if npm run build; then
+            echo "✅ Build successful"
+            echo "build=✅ Build successful" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Build failed"
+            echo "build=❌ Build failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Test check
+          if npm test; then
+            echo "✅ Tests passed"
+            echo "tests=✅ Tests passed" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Tests failed"
+            echo "tests=❌ Tests failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Type check
+          if npx tsc --noEmit; then
+            echo "✅ Type checking passed"
+            echo "typecheck=✅ Type checking passed" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Type checking failed"
+            echo "typecheck=❌ Type checking failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          # Security audit
+          if npm audit --audit-level=high; then
+            echo "✅ Security audit passed"
+            echo "audit=✅ Security audit passed" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Security vulnerabilities found"
+            echo "audit=⚠️ Security vulnerabilities found" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get recent commits
+        id: commits
+        run: |
+          # Get commits since last release
+          COMMITS=$(git log --oneline -10 --pretty=format:"- %s" origin/develop ^origin/release 2>/dev/null || git log --oneline -10 --pretty=format:"- %s")
+          COMMIT_COUNT=$(git rev-list --count origin/develop ^origin/release 2>/dev/null || git rev-list --count origin/develop)
+          
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT  
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Create or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CURRENT_DATE=$(date +"%Y-%m-%d")
+          COMMIT_COUNT="${{ steps.commits.outputs.count }}"
+          
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head develop --base release --json number --jq '.[0].number' || echo "")
+          
+          # Create PR body
+          cat > pr_body.md << 'EOF'
+          # 🚀 Release Candidate: $CURRENT_DATE - $COMMIT_COUNT commits
+          
+          ## ✅ Validation Status
+          
+          ${{ steps.validation.outputs.build }}
+          ${{ steps.validation.outputs.tests }}
+          ${{ steps.validation.outputs.typecheck }}
+          ${{ steps.validation.outputs.audit }}
+          
+          ## 📋 Merge Conflict Status
+          
+          ${{ steps.automerge.outputs.conflicts == 'true' && '⚠️ Merge conflicts detected - manual resolution required' || '✅ No merge conflicts detected' }}
+          
+          ## 📝 Recent Changes ($COMMIT_COUNT commits)
+          
+          ${{ steps.commits.outputs.commits }}
+          
+          ## 🎯 Pre-merge Checklist
+          
+          - [x] All validation checks passed
+          - [x] Security audit completed
+          - [x] Ready for release
+          
+          ## 🚀 Post-merge Actions (Automatic)
+          
+          When merged, this will automatically:
+          - 📦 Build and publish to NPM as @chriscoletech/desktop-commander-mcp
+          - 🏷️ Create version tag (patch bump)
+          - 📄 Generate GitHub release with notes
+          - 🔄 Sync changes to main branch
+          
+          ---
+          
+          *Generated automatically by GitHub Actions*
+          *Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')*
+          EOF
+          
+          # Replace variables in the template
+          sed -i "s/\$CURRENT_DATE/$CURRENT_DATE/g" pr_body.md
+          sed -i "s/\$COMMIT_COUNT/$COMMIT_COUNT/g" pr_body.md
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Updating existing PR #$EXISTING_PR"
+            gh pr edit $EXISTING_PR --title "🚀 Release Candidate: $CURRENT_DATE - $COMMIT_COUNT commits" --body-file pr_body.md
+          else
+            echo "Creating new PR"
+            gh pr create --title "🚀 Release Candidate: $CURRENT_DATE - $COMMIT_COUNT commits" --body-file pr_body.md --head develop --base release
+          fi
+
+      - name: Comment on validation failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING_PR=$(gh pr list --head develop --base release --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING_PR" ]; then
+            gh pr comment $EXISTING_PR --body "❌ **Validation Failed** - Please check the failed validation steps and push fixes to develop branch."
+          fi

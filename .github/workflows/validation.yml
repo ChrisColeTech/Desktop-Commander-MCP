@@ -1,0 +1,75 @@
+name: Validation
+
+on:
+  pull_request:
+    branches: [develop, release, main]
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Install dependencies
+        env:
+          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
+        run: |
+          # Skip binary download for @vscode/ripgrep and try install
+          npm ci || npm install --ignore-scripts
+
+      - name: Run build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run type checking
+        run: npx tsc --noEmit
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Package integrity check
+        run: |
+          npm pack --dry-run
+          echo "✅ Package integrity verified"
+
+      - name: Validate package.json
+        run: |
+          if [ -f "package.json" ]; then
+            echo "✅ package.json exists"
+            # Check required fields
+            node -e "
+              const pkg = require('./package.json');
+              if (!pkg.name) throw new Error('Missing package name');
+              if (!pkg.version) throw new Error('Missing version');
+              if (!pkg.description) throw new Error('Missing description');
+              console.log('✅ Package.json validation passed');
+            "
+          else
+            echo "❌ package.json not found"
+            exit 1
+          fi

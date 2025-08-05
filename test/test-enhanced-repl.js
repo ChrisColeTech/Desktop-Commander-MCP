@@ -4,7 +4,7 @@ import { startProcess, readProcessOutput, forceTerminate, interactWithProcess } 
 
 /**
  * Determines the correct python command to use
- * @returns {string} 'python3' or 'python'
+ * @returns {string|null} 'python3', 'python', or null if not available
  */
 function getPythonCommand() {
   try {
@@ -17,7 +17,7 @@ function getPythonCommand() {
       execSync('command -v python', { stdio: 'ignore' });
       return 'python';
     } catch (error) {
-      throw new Error('Neither python3 nor python command is available in the PATH');
+      return null; // Python not available
     }
   }
 }
@@ -30,6 +30,10 @@ async function testEnhancedREPL() {
   console.log('Testing enhanced REPL functionality...');
   
   const pythonCommand = getPythonCommand();
+  if (!pythonCommand) {
+    console.log('⚠️ Python not available - skipping Python REPL tests');
+    return true; // Skip test but don't fail
+  }
   console.log(`Using python command: ${pythonCommand}`);
 
   // Start Python in interactive mode

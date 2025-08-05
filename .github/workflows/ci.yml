@@ -28,10 +28,31 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install ripgrep
+        shell: bash
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            sudo apt-get update && sudo apt-get install -y ripgrep
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            brew install ripgrep
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            choco install ripgrep
+          fi
+
       - name: Install dependencies
-        run: npm ci
+        env:
+          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
+        run: |
+          # Skip binary download for @vscode/ripgrep and try install
+          npm ci || npm install --ignore-scripts
 
       - name: Run linting (if available)
+        shell: bash
         run: |
           if npm run lint --if-present; then
             echo "✅ Linting passed"
@@ -40,6 +61,7 @@ jobs:
           fi
 
       - name: Run type checking
+        shell: bash
         run: |
           if npm run typecheck --if-present; then
             echo "✅ Type checking passed"
@@ -79,19 +101,35 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        env:
+          VSCODE_RIPGREP_SKIP_DOWNLOAD: 1
+        run: |
+          # Skip binary download for @vscode/ripgrep and try install
+          npm ci || npm install --ignore-scripts
 
       - name: Build and verify package
+        shell: bash
         run: |
           npm run build
-          npm pack --dry-run
           
-      - name: Check package size
-        run: |
-          PACKAGE_SIZE=$(npm pack --dry-run --silent | grep "tarball size:" | awk '{print $3}')
-          echo "📦 Package size: $PACKAGE_SIZE"
+          # Get package size from npm pack output, handle errors gracefully
+          echo "📦 Checking package integrity and size..."
+          if PACK_OUTPUT=$(npm pack --dry-run 2>&1); then
+            echo "✅ Package integrity verified"
+            PACKAGE_SIZE=$(echo "$PACK_OUTPUT" | grep "package size:" | awk '{print $3" "$4}')
+            if [ -z "$PACKAGE_SIZE" ]; then
+              # Fallback: look for any size-related info
+              PACKAGE_SIZE=$(echo "$PACK_OUTPUT" | grep -E "(size|Size)" | tail -1 | awk '{print $(NF-1)" "$NF}')
+            fi
+            echo "📦 Package size: ${PACKAGE_SIZE:-"Unknown"}"
+          else
+            echo "⚠️ Package verification failed"
+            echo "Error output: $PACK_OUTPUT"
+            exit 1
+          fi
           
       - name: Verify binary executables
+        shell: bash
         run: |
           npm run build
           if [ -f "dist/index.js" ]; then
