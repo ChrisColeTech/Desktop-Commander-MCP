@@ -33,12 +33,17 @@ Desktop Commander brings terminal access and file system operations directly int
 
 ## 📦 Installation
 
-### Option 1: NPX Setup (Recommended)
+### Option 1: Claude Code (CLI)
+```bash
+claude mcp add desktop-commander -- npx -y @chriscoletech/desktop-commander-mcp
+```
+
+### Option 2: Claude Desktop Setup (Recommended)
 ```bash
 npx --package=@chriscoletech/desktop-commander-mcp@latest setup
 ```
 
-### Option 2: Manual Configuration
+### Option 3: Manual Configuration
 Add to your Claude Desktop config file (`claude_desktop_config.json`):
 
 ```json

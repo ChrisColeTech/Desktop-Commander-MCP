@@ -78,9 +78,14 @@ Execute long-running terminal commands on your computer and manage processes thr
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-> **📋 Update & Uninstall Information:** Before choosing an installation option, note that **only Options 1 and 3 have automatic updates**. Options 2, 4, and 5 require manual updates. See the sections below for update and uninstall instructions for each option.
+> **📋 Update & Uninstall Information:** Before choosing an installation option, note that **only Options 1 and 2 have automatic updates**. Options 3 and 4 require manual updates. See the sections below for update and uninstall instructions for each option.
 
-### Option 1: Install through npx ⭐ **Auto-Updates**
+### Option 1: Claude Code (CLI)
+```bash
+claude mcp add desktop-commander -- npx -y @chriscoletech/desktop-commander-mcp
+```
+
+### Option 2: Install through npx ⭐ **Auto-Updates**
 Just run this in terminal:
 ```
 npx --package=@chriscoletech/desktop-commander-mcp@latest setup
@@ -93,10 +98,14 @@ npx --package=@chriscoletech/desktop-commander-mcp@latest setup --debug
 Restart Claude if running.
 
 **✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
+**🔄 Manual Update:** `claude mcp remove desktop-commander && claude mcp add desktop-commander -- npx -y @chriscoletech/desktop-commander-mcp`  
+**🗑️ Uninstall:** `claude mcp remove desktop-commander`
+
+**✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
 **🔄 Manual Update:** Run the setup command again  
 **🗑️ Uninstall:** Run `npx --package=@chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 
-### Option 2: Add to claude_desktop_config manually ❌ **Manual Updates**
+### Option 3: Add to claude_desktop_config manually ❌ **Manual Updates**
 Add this entry to your claude_desktop_config.json:
 
 - On Mac: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
@@ -122,7 +131,7 @@ Restart Claude if running.
 **🔄 Manual Update:** Usually automatic via npx, but if issues occur, update your config file or re-add the entry  
 **🗑️ Uninstall:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
 
-### Option 3: Local Development Setup ❌ **Manual Updates**
+### Option 4: Local Development Setup ❌ **Manual Updates**
 For development or if you want to run from source:
 
 1. Clone and build:
@@ -155,17 +164,18 @@ npm run build
 
 ## Updating & Uninstalling Desktop Commander
 
-### Automatic Updates (Option 1 only)
-**Option 1 (npx setup)** automatically updates to the latest version whenever you restart Claude. No manual intervention needed.
+### Automatic Updates (Options 1 & 2 only)
+**Option 1 (Claude Code)** and **Option 2 (npx setup)** automatically update to the latest version whenever you restart Claude. No manual intervention needed.
 
-### Manual Updates (Options 2 & 3)
-- **Option 2 (manual config):** Usually automatic via npx, but re-add config entry if issues occur
-- **Option 3 (local development):** `cd Desktop-Commander-MCP && git pull && npm run build`
+### Manual Updates (Options 3 & 4)
+- **Option 3 (manual config):** Usually automatic via npx, but re-add config entry if issues occur
+- **Option 4 (local development):** `cd Desktop-Commander-MCP && git pull && npm run build`
 
 ### Uninstalling Desktop Commander
-- **Option 1:** `npx --package=@chriscoletech/desktop-commander-mcp@latest setup --uninstall`
-- **Option 2:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
-- **Option 3:** Delete the cloned directory and remove MCP server entry from Claude config
+- **Option 1:** `claude mcp remove desktop-commander`
+- **Option 2:** `npx --package=@chriscoletech/desktop-commander-mcp@latest setup --uninstall`
+- **Option 3:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
+- **Option 4:** Delete the cloned directory and remove MCP server entry from Claude config
 
 After uninstalling, restart Claude Desktop to complete the removal.
 
