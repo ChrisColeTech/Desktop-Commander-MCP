@@ -35,7 +35,7 @@ Desktop Commander brings terminal access and file system operations directly int
 
 ### Option 1: NPX Setup (Recommended)
 ```bash
-npx @chriscoletech/desktop-commander-mcp@latest setup
+npx --package=@chriscoletech/desktop-commander-mcp@latest setup
 ```
 
 ### Option 2: Manual Configuration
@@ -109,4 +109,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ⭐ **Star this repository** if you find it useful!  
 🐛 **Report issues** or suggest features at [GitHub Issues](https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues)
 
-**Get started today** - `npx @chriscoletech/desktop-commander-mcp@latest setup` and bring terminal access into Claude Desktop!
+**Get started today** - `npx --package=@chriscoletech/desktop-commander-mcp@latest setup` and bring terminal access into Claude Desktop!

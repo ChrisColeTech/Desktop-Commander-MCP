@@ -83,18 +83,18 @@ First, ensure you've downloaded and installed the [Claude Desktop app](https://c
 ### Option 1: Install through npx ⭐ **Auto-Updates**
 Just run this in terminal:
 ```
-npx @chriscoletech/desktop-commander-mcp@latest setup
+npx --package=@chriscoletech/desktop-commander-mcp@latest setup
 ```
 
 For debugging mode (allows Node.js inspector connection):
 ```
-npx @chriscoletech/desktop-commander-mcp@latest setup --debug
+npx --package=@chriscoletech/desktop-commander-mcp@latest setup --debug
 ```
 Restart Claude if running.
 
 **✅ Auto-Updates:** Yes - automatically updates when you restart Claude  
 **🔄 Manual Update:** Run the setup command again  
-**🗑️ Uninstall:** Run `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
+**🗑️ Uninstall:** Run `npx --package=@chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 
 ### Option 2: Add to claude_desktop_config manually ❌ **Manual Updates**
 Add this entry to your claude_desktop_config.json:
@@ -163,7 +163,7 @@ npm run build
 - **Option 3 (local development):** `cd Desktop-Commander-MCP && git pull && npm run build`
 
 ### Uninstalling Desktop Commander
-- **Option 1:** `npx @chriscoletech/desktop-commander-mcp@latest setup --uninstall`
+- **Option 1:** `npx --package=@chriscoletech/desktop-commander-mcp@latest setup --uninstall`
 - **Option 2:** Remove the "desktop-commander" entry from your claude_desktop_config.json file
 - **Option 3:** Delete the cloned directory and remove MCP server entry from Claude config
 
