@@ -9,20 +9,18 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![GitHub Stars](https://img.shields.io/github/stars/ChrisColeTech/Desktop-Commander-MCP.svg)](https://github.com/ChrisColeTech/Desktop-Commander-MCP/stargazers)
 
-**Search, update, manage files and run terminal commands with AI**
+**Model Context Protocol server for terminal operations and file editing**
 
-Work with code and text, run processes, and automate tasks through Claude AI - going far beyond other editors without API token costs.
+Execute terminal commands, manage processes, and perform advanced file operations through Claude Desktop via MCP.
 
 ## 🛠️ All Your Dev Tools in One Place
 
-Desktop Commander puts all development functionality in one AI chat interface, eliminating context switching between different tools.
+Desktop Commander brings terminal access and file system operations directly into Claude Desktop through the Model Context Protocol.
 
-- **🎯 Focus on What Matters**: Stop switching between terminal, editor, file browser, and documentation
-- **⚡ Instant Execution**: Run terminal commands, analyze data, and modify files in real-time
-- **🔄 Process Management**: Handle long-running commands, SSH sessions, and development servers
-- **📁 Smart File Operations**: Search, edit, and manage your entire codebase with AI precision
-
-This approach gives you complete development control while maintaining the natural conversation flow with Claude.
+- **🖥️ Terminal Control**: Execute commands and manage long-running processes
+- **📁 File Operations**: Read, write, search, and edit files with precision
+- **🔍 Code Search**: Advanced search capabilities using ripgrep
+- **🔄 Process Management**: Handle SSH sessions, development servers, and background tasks
 
 ## 🚀 Key Features
 
@@ -35,30 +33,31 @@ This approach gives you complete development control while maintaining the natur
 
 ## 📦 Installation
 
+### Option 1: NPX Setup (Recommended)
 ```bash
-# Install globally from npm  
-npm install -g @chriscoletech/desktop-commander-mcp
+npx @chriscoletech/desktop-commander-mcp@latest setup
 ```
 
-## 🛠️ Development
-
+### Option 2: Via Smithery
 ```bash
-# Clone and setup
-git clone https://github.com/ChrisColeTech/Desktop-Commander-MCP.git
-cd Desktop-Commander-MCP
-npm install
-npm run build
-
-# Development commands  
-npm run watch       # Hot reload development
-npm test           # Run test suite
-npm run start      # Start the MCP server
-
-# Install CLI globally for testing
-npm install -g .
+npx -y @smithery/cli install @chriscoletech/desktop-commander-mcp --client claude
 ```
 
+### Option 3: Manual Configuration
+Add to your Claude Desktop config file (`claude_desktop_config.json`):
 
+```json
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "npx",
+      "args": ["@chriscoletech/desktop-commander-mcp"]
+    }
+  }
+}
+```
+
+After installation, restart Claude Desktop to activate the MCP server.
 
 ## 🔧 Available MCP Tools
 
@@ -97,23 +96,6 @@ Desktop Commander provides these tools through the Model Context Protocol:
 - **`get_usage_stats`** - Get usage statistics for debugging
 - **`give_feedback_to_desktop_commander`** - Open feedback form in browser
 
-
-## 🔐 Claude Desktop Configuration
-
-Desktop Commander integrates with Claude Desktop through MCP (Model Context Protocol). The setup command automatically configures this, but you can also manually add:
-
-```json
-{
-  "mcpServers": {
-    "desktop-commander": {
-      "command": "npx",
-      "args": ["@chriscoletech/desktop-commander-mcp"]
-    }
-  }
-}
-```
-
-
 ## 📚 Documentation
 
 📖 **[Full Documentation](docs/README.md)** - Comprehensive guide with detailed examples, production deployment, troubleshooting, and advanced configuration.
@@ -132,4 +114,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ⭐ **Star this repository** if you find it useful!  
 🐛 **Report issues** or suggest features at [GitHub Issues](https://github.com/ChrisColeTech/Desktop-Commander-MCP/issues)
 
-**Get started today** - `npm install -g @chriscoletech/desktop-commander-mcp` and bring all your dev tools into Claude AI!
+**Get started today** - `npx @chriscoletech/desktop-commander-mcp@latest setup` and bring terminal access into Claude Desktop!
