@@ -38,12 +38,7 @@ Desktop Commander brings terminal access and file system operations directly int
 npx @chriscoletech/desktop-commander-mcp@latest setup
 ```
 
-### Option 2: Via Smithery
-```bash
-npx -y @smithery/cli install @chriscoletech/desktop-commander-mcp --client claude
-```
-
-### Option 3: Manual Configuration
+### Option 2: Manual Configuration
 Add to your Claude Desktop config file (`claude_desktop_config.json`):
 
 ```json
